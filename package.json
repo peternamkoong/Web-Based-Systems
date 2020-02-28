@@ -1,0 +1,34 @@
+{
+    "name": "web-based-systems",
+    "version": "1.0.0",
+    "description": "Repository for SENG 513 - Web-Based Systems",
+    "main": "index.js",
+    "scripts": {
+        "dev": "nodemon index"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/peternamkoong/Web-Based-Systems.git"
+    },
+    "author": "Kyoung Hwan Namkoong",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/peternamkoong/Web-Based-Systems/issues"
+    },
+    "homepage": "https://github.com/peternamkoong/Web-Based-Systems#readme",
+    "dependencies": {
+        "express": "^4.17.1",
+        "socket.io": "^2.3.0"
+    },
+    "devDependencies": {
+        "install": "^0.13.0",
+        "nodemon": "^2.0.2",
+        "npm": "^6.14.1"
+    },
+    "prettier": {
+        "trailingComma": "es5",
+        "tabWidth": 4,
+        "semi": true,
+        "singleQuote": true
+    }
+}
