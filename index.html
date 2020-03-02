@@ -9,46 +9,89 @@
                 box-sizing: border-box;
             }
             body {
-                font: 13px Helvetica, Arial;
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                font: 20px Helvetica, Arial;
             }
-            form {
-                background: #000;
-                padding: 3px;
-                position: fixed;
-                bottom: 0;
+            .container-1 {
+                position: relative;
+                display: flex;
+                height: 96%;
                 width: 100%;
             }
-            form input {
-                border: 0;
+            .container-1 div {
+                border: 1px #ccc solid;
                 padding: 10px;
-                width: 90%;
-                margin-right: 0.5%;
+                background-color: #fafae6;
             }
-            form button {
-                width: 9%;
-                background: rgb(130, 224, 255);
-                border: none;
-                padding: 10px;
+            .chat {
+                flex: 3;
+                order: 1;
             }
             #messages {
+                height: 100%;
+                overflow: auto;
+                display: -webkit-flex;
+                -webkit-flex-direction: column-reverse;
+                flex-direction: column-reverse;
+                word-wrap: break-word;
                 list-style-type: none;
-                margin: 0;
-                padding: 0;
             }
             #messages li {
                 padding: 5px 10px;
             }
-            #messages li:nth-child(odd) {
-                background: #eee;
+            .users li {
+                padding: 5px 10px;
+            }
+            .online {
+                flex: 1;
+                order: 2;
+            }
+            .container-2 {
+                position: relative;
+                display: flex;
+                bottom: 0%;
+                height: 4%;
+                width: 100%;
+            }
+            form {
+                height: 100%;
+            }
+            .container-2 div {
+                position: relative;
+                height: 100%;
+            }
+            .container-2 form {
+                width: 100%;
+            }
+            form #m {
+                height: 100%;
+                width: 80%;
+            }
+            form button {
+                height: 100%;
+                width: 20%;
             }
         </style>
     </head>
     <body>
-        <ul id="messages"></ul>
-        <form action="">
-            <input id="m" autocomplete="off" /><button>Send</button>
-        </form>
-
+        <div class="container-1">
+            <div class="online">
+                <ul id="users"></ul>
+                <li>Hello</li>
+            </div>
+            <div class="chat">
+                <ul id="messages"></ul>
+            </div>
+        </div>
+        <div class="container-2">
+            <form action="">
+                <div class="inputBox">
+                    <input id="m" autocomplete="off" /><button>Send</button>
+                </div>
+            </form>
+        </div>
         <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
         <script src="/socket.io/socket.io.js"></script>
         <script>
@@ -60,14 +103,34 @@
                     $('#m').val('');
                     return false;
                 });
-                socket.on('connection', function(msg) {
-                    $('#messages').append($('<li>').text(msg));
-                });
-                socket.on('chat message', function(msg) {
-                    $('#messages').append($('<li>').text(msg));
+                socket.on('colored', function(msg, color) {
+                    let msg2 =
+                        '<li><font color =' + color + '>' + msg + '</li>';
+                    $('#messages').prepend(msg2);
                 });
                 socket.on('disconnect', function(msg) {
-                    $('#messages').append($('<li>').text(msg));
+                    let msg2 = msg + ' has disconnected.';
+                    $('#messages').prepend($('<li>').text(msg2));
+                });
+                socket.on('nickCorrect', function() {
+                    let msg = '<li><b>Your nick has been set.</b></li>';
+                    $('#messages').prepend(msg);
+                });
+                socket.on('nickIncorrect', function() {
+                    let msg = 'Your nickname could not be set.';
+                    $('#messages').prepend($('<li>').text(msg));
+                });
+                socket.on('nickColorCorrect', function() {
+                    let msg = 'your text color is has been changed.';
+                    $('#messages').prepend($('<li>').text(msg));
+                });
+                socket.on('nickColorIncorrect', function() {
+                    let msg =
+                        'your text color could not be changed. Make sure it is in a proper hexcolor format <RRGGBB>';
+                    $('#messages').prepend($('<li>').text(msg));
+                });
+                io.on('onlineUsers', function(msg) {
+                    $('.users').append($('<li>').text(msg));
                 });
             });
         </script>
