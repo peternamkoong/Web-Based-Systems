@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Socket.IO chat</title>
+        <title>Kyoung Hwan Namkoong's Chatroom</title>
         <style>
             * {
                 margin: 0;
@@ -41,8 +41,9 @@
             #messages li {
                 padding: 5px 10px;
             }
-            .users li {
+            #users li {
                 padding: 5px 10px;
+                list-style-type: none;
             }
             .online {
                 flex: 1;
@@ -79,7 +80,6 @@
         <div class="container-1">
             <div class="online">
                 <ul id="users"></ul>
-                <li>Hello</li>
             </div>
             <div class="chat">
                 <ul id="messages"></ul>
@@ -103,36 +103,109 @@
                     $('#m').val('');
                     return false;
                 });
-                socket.on('colored', function(msg, color) {
+
+                socket.on('cookies', function(nick, color) {
+                    let cookieUsername;
+                    let cookieColor;
+
+                    if (checkCookie()) {
+                        cookieUsername = getCookie('username');
+                        cookieColor = getCookie('color');
+                    } else {
+                        cookieUsername = nick;
+                        cookieColor = color;
+                        setCookie('username', nick, 7);
+                        setCookie('color', color, 7);
+                    }
+                    socket.emit('setNick', cookieUsername);
+                    socket.emit('setColor', cookieColor);
+                });
+                socket.on('loadHistory', function(msg) {
+                    $('#messages').prepend(msg);
+                });
+                socket.on('message', function(date, nick, msg, color) {
                     let msg2 =
-                        '<li><font color =' + color + '>' + msg + '</li>';
+                        '<li><font color =' +
+                        color +
+                        '><b> ' +
+                        date +
+                        nick +
+                        ': ' +
+                        msg +
+                        '</li>';
+                    socket.emit('storeHistory', msg2);
                     $('#messages').prepend(msg2);
                 });
                 socket.on('disconnect', function(msg) {
                     let msg2 = msg + ' has disconnected.';
                     $('#messages').prepend($('<li>').text(msg2));
                 });
-                socket.on('nickCorrect', function() {
-                    let msg = '<li><b>Your nick has been set.</b></li>';
+                socket.on('nickCorrect', function(username) {
+                    setCookie('username', username, 7);
+                    let msg =
+                        '<li><i>Your nickname has been set to <b>' +
+                        username +
+                        '.</i></li>';
+                    $('#messages').prepend(msg);
+                });
+                socket.on('uniqueNick', function(message) {
+                    let msg = '<li><i>' + message + '</i></li>';
                     $('#messages').prepend(msg);
                 });
                 socket.on('nickIncorrect', function() {
-                    let msg = 'Your nickname could not be set.';
-                    $('#messages').prepend($('<li>').text(msg));
+                    let msg = '<li><i>Your nickname could not be set.</i></li>';
+                    $('#messages').prepend(msg);
                 });
-                socket.on('nickColorCorrect', function() {
-                    let msg = 'your text color is has been changed.';
-                    $('#messages').prepend($('<li>').text(msg));
+                socket.on('nickColorCorrect', function(color) {
+                    setCookie('color', color, 7);
+                    let msg =
+                        '<li><i>your text color is has been changed.</i></li>';
+                    $('#messages').prepend(msg);
                 });
                 socket.on('nickColorIncorrect', function() {
                     let msg =
-                        'your text color could not be changed. Make sure it is in a proper hexcolor format <RRGGBB>';
-                    $('#messages').prepend($('<li>').text(msg));
+                        '<li><i>your text color could not be changed. Make sure it is in a proper hexcolor format RRGGBB. </i></li>';
+                    $('#messages').prepend(msg);
                 });
-                io.on('onlineUsers', function(msg) {
-                    $('.users').append($('<li>').text(msg));
+                socket.on('onlineUsers', function(msg) {
+                    $('#users').append($('<li>').text(msg));
+                });
+                socket.on('clearUsers', function() {
+                    $('#users').empty();
                 });
             });
+
+            function setCookie(cname, cvalue, exdays) {
+                var d = new Date();
+                d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+                var expires = 'expires=' + d.toUTCString();
+                document.cookie =
+                    cname + '=' + cvalue + ';' + expires + ';path=/';
+            }
+
+            function getCookie(cname) {
+                var name = cname + '=';
+                var ca = document.cookie.split(';');
+                for (var i = 0; i < ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+                return '';
+            }
+
+            function checkCookie() {
+                var user = getCookie('username');
+                if (user != '') {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         </script>
     </body>
 </html>
