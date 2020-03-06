@@ -1,0 +1,130 @@
+/*
+/**********************************************
+ * Last Name:   Namkoong
+ * First Name:  Kyoung Hwan
+ * Student ID:  10125240
+ * Course:      SENG 513
+ * Tutorial:    05
+ * Assignment:  3
+ *********************************************
+*/
+* {
+    font-family: 'Sen', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    font: 20px Helvetica, Arial;
+    background-color: #22223b;
+}
+.container-0 {
+    position: relative;
+    height: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background-color: #22223b;
+}
+.container-1 {
+    border-radius: 50px;
+    position: relative;
+    display: flex;
+    height: 3%;
+    text-align: center;
+    align-items: center;
+    color: white;
+    background-color: #4a4e69;
+}
+#chatHeader {
+    flex: 3;
+    order: 1;
+}
+#userHeader {
+    flex: 1;
+    order: 2;
+}
+.container-2 {
+    position: relative;
+    display: flex;
+    height: 88%;
+    width: 100%;
+}
+.container-2 div {
+    border-radius: 50px;
+    background-color: #f2e9e4;
+    border: 10px #c9ada7 solid;
+    padding: 10px;
+}
+.chat {
+    flex: 3;
+    order: 1;
+}
+#messages {
+    height: 100%;
+    overflow: auto;
+    display: -webkit-flex;
+    -webkit-flex-direction: column-reverse;
+    flex-direction: column-reverse;
+    word-wrap: break-word;
+    list-style-type: none;
+}
+#messages li {
+    padding: 10px 10px;
+}
+#users li {
+    padding: 5px 50px;
+    font-size: 30px;
+    list-style-type: none;
+}
+.online {
+    flex: 1;
+    order: 2;
+}
+.container-3 {
+    position: relative;
+    display: flex;
+    bottom: 0%;
+    height: 4%;
+    width: 100%;
+}
+form {
+    height: 100%;
+}
+
+.container-3 div {
+    position: relative;
+    height: 100%;
+}
+.container-3 form {
+    width: 100%;
+}
+form #m {
+    padding: 5px 40px;
+    height: 100%;
+    width: 80%;
+    border-radius: 50px;
+    font-size: 20px;
+}
+form #m:focus {
+    outline: none;
+}
+
+form button {
+    height: 100%;
+    width: 20%;
+    border-radius: 50px;
+    color: white;
+    border: 2px #9a8c98 solid;
+    background-color: #22223b;
+}
+form button:active {
+    background-color: #4a4e69;
+}
+form button:focus {
+    outline: none;
+}
