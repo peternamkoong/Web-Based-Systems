@@ -18,7 +18,7 @@
     "homepage": "https://github.com/peternamkoong/Web-Based-Systems#readme",
     "dependencies": {
         "express": "^4.17.1",
-        "socket.io": "^2.3.0"
+        "socket.io": "^2.4.0"
     },
     "devDependencies": {
         "install": "^0.13.0",
